@@ -22,7 +22,9 @@ public class CraftExecutor {
         for (ItemStack stack : node.inputs) {
             if (stack == null || stack.isEmpty()) continue;
             int count = 0;
-            for (ItemStack inv : player.getInventory().main) {
+            int size = player.getInventory().size();
+            for (int i = 0; i < size; i++) {
+                ItemStack inv = player.getInventory().getStack(i);
                 if (ItemStack.areItemsEqual(inv, stack)) {
                     count += inv.getCount();
                 }
@@ -36,7 +38,9 @@ public class CraftExecutor {
         for (ItemStack stack : node.inputs) {
             if (stack == null || stack.isEmpty()) continue;
             int need = stack.getCount();
-            for (ItemStack inv : player.getInventory().main) {
+            int size = player.getInventory().size();
+            for (int i = 0; i < size; i++) {
+                ItemStack inv = player.getInventory().getStack(i);
                 if (ItemStack.areItemsEqual(inv, stack)) {
                     int take = Math.min(inv.getCount(), need);
                     inv.decrement(take);
