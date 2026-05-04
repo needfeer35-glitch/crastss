@@ -9,7 +9,7 @@
   "entrypoints": {
     "client": ["net.craftsi.mod.CraftsiMod"]
   },
-  "mixins": [],
+  "mixins": ["craftsi.mixins.json"],
   "depends": {
     "fabricloader": ">=0.16.0",
     "fabric-api": "*",
