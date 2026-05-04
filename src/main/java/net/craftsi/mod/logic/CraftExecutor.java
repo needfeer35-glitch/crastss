@@ -13,7 +13,7 @@ public class CraftExecutor {
             if (canCraft(node, player)) {
                 craft(node, player);
             } else {
-                node.isActive = false; // ставим красную галочку
+                node.isActive = false;
             }
         }
     }
