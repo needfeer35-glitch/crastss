@@ -13,13 +13,17 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class CraftsiMod implements ClientModInitializer {
 
     public static KeyBinding openGuiKey;
+    public static CraftsiScreen currentScreen = null;
+    public static final Set<String> autoCraftEnabled = new HashSet<>();
 
     @Override
     public void onInitializeClient() {
-        // Клавиша O
         openGuiKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key.craftsi.open_gui",
             InputUtil.Type.KEYSYM,
@@ -27,20 +31,25 @@ public class CraftsiMod implements ClientModInitializer {
             "category.craftsi"
         ));
 
-        // Команда /craftsi (клиентская — работает и на серверах без установки мода на сервер)
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) ->
             CraftsiCommand.register(dispatcher)
         );
 
-        // Тик — обработка клавиши и автокрафт
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (openGuiKey.wasPressed()) {
-                MinecraftClient.getInstance().execute(() ->
-                    MinecraftClient.getInstance().setScreen(new CraftsiScreen())
-                );
+                MinecraftClient.getInstance().send(() -> {
+                    currentScreen = new CraftsiScreen();
+                    MinecraftClient.getInstance().setScreen(currentScreen);
+                });
             }
+
             if (client.player != null) {
-                CraftExecutor.tick(NodeGraph.getInstance(), client.player);
+                // Синхронизируем autoCraftEnabled с текущим экраном
+                if (client.currentScreen instanceof CraftsiScreen screen) {
+                    autoCraftEnabled.clear();
+                    autoCraftEnabled.addAll(screen.getAutoCraftEnabled());
+                }
+                CraftExecutor.tick(NodeGraph.getInstance(), client.player, autoCraftEnabled);
             }
         });
     }
