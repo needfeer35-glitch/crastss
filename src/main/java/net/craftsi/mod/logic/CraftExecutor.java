@@ -5,12 +5,17 @@ import net.craftsi.mod.node.RecipeNode;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
+import java.util.Set;
+
 public class CraftExecutor {
 
-    public static void tick(NodeGraph graph, PlayerEntity player) {
+    public static void tick(NodeGraph graph, PlayerEntity player, Set<String> autoCraftEnabled) {
         for (RecipeNode node : graph.getNodes()) {
-            if (!node.isActive) continue;
+            if (!autoCraftEnabled.contains(node.id)) continue;
+            if (node.result == null || node.result.isEmpty()) continue;
+
             if (canCraft(node, player)) {
+                node.isActive = true;
                 craft(node, player);
             } else {
                 node.isActive = false;
@@ -19,33 +24,30 @@ public class CraftExecutor {
     }
 
     private static boolean canCraft(RecipeNode node, PlayerEntity player) {
-        for (ItemStack stack : node.inputs) {
-            if (stack == null || stack.isEmpty()) continue;
-            int count = 0;
+        for (ItemStack need : node.inputs) {
+            if (need == null || need.isEmpty()) continue;
+            int found = 0;
             int size = player.getInventory().size();
             for (int i = 0; i < size; i++) {
                 ItemStack inv = player.getInventory().getStack(i);
-                if (ItemStack.areItemsEqual(inv, stack)) {
-                    count += inv.getCount();
-                }
+                if (ItemStack.areItemsEqual(inv, need)) found += inv.getCount();
             }
-            if (count < stack.getCount()) return false;
+            if (found < need.getCount()) return false;
         }
         return true;
     }
 
     private static void craft(RecipeNode node, PlayerEntity player) {
-        for (ItemStack stack : node.inputs) {
-            if (stack == null || stack.isEmpty()) continue;
-            int need = stack.getCount();
+        for (ItemStack need : node.inputs) {
+            if (need == null || need.isEmpty()) continue;
+            int toRemove = need.getCount();
             int size = player.getInventory().size();
-            for (int i = 0; i < size; i++) {
+            for (int i = 0; i < size && toRemove > 0; i++) {
                 ItemStack inv = player.getInventory().getStack(i);
-                if (ItemStack.areItemsEqual(inv, stack)) {
-                    int take = Math.min(inv.getCount(), need);
+                if (ItemStack.areItemsEqual(inv, need)) {
+                    int take = Math.min(inv.getCount(), toRemove);
                     inv.decrement(take);
-                    need -= take;
-                    if (need <= 0) break;
+                    toRemove -= take;
                 }
             }
         }
