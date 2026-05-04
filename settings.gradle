@@ -1,1 +1,8 @@
-rootProject.name = "craftsi-mod"
+pluginManagement {
+    repositories {
+        maven { url 'https://maven.fabricmc.net/' }
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'craftsi'
