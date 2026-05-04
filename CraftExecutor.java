@@ -45,6 +45,10 @@ public class CraftExecutor {
                     inv.decrement(take);
                     need -= take;
                     if (need <= 0) break;
+   private void drawNodeLine(DrawContext context, int x1, int y1, int x2, int y2) {
+    // Рисуем простую линию. Для красоты можно использовать кривые Безье.
+    context.fill(x1 + 20, y1 + 20, x2 + 20, y2 + 20, 0xFFAAAAAA); 
+}
                 }
             }
         }
