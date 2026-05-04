@@ -8,17 +8,15 @@ import net.minecraft.item.ItemStack;
 
 public class CraftExecutor {
 
-    public static void tick(NodeGraph graph, PlayerEntity player) {
-
-        for (RecipeNode node : graph.getAllNodes()) {
-
-            if (!node.isActive) continue;
-
-            if (canCraft(node, player)) {
-                craft(node, player);
-            }
-        }
-    }
+   private static void transferItem(int fromSlot, int toSlot) {
+    var manager = client.interactionManager;
+    var handler = client.player.currentScreenHandler;
+    
+    // Клик по предмету в инвентаре
+    manager.clickSlot(handler.syncId, fromSlot, 0, SlotActionType.PICKUP, client.player);
+    // Клик по слоту в сетке верстака
+    manager.clickSlot(handler.syncId, toSlot, 0, SlotActionType.PICKUP, client.player);
+}
 
     private static boolean canCraft(RecipeNode node, PlayerEntity player) {
         for (ItemStack stack : node.inputs) {
