@@ -1,7 +1,6 @@
 package net.craftsi.mod;
 
 import net.craftsi.mod.command.CraftsiCommand;
-import net.craftsi.mod.gui.CraftsiScreen;
 import net.craftsi.mod.logic.CraftExecutor;
 import net.craftsi.mod.node.NodeGraph;
 import net.fabricmc.api.ClientModInitializer;
@@ -26,18 +25,21 @@ public class CraftsiMod implements ClientModInitializer {
             "category.craftsi"
         ));
 
-        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) ->
-            CraftsiCommand.register(dispatcher)
+        ClientCommandRegistrationCallback.EVENT.register(
+            (dispatcher, registryAccess) ->
+                CraftsiCommand.register(dispatcher)
         );
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (openGuiKey.wasPressed()) {
                 MinecraftClient.getInstance().send(() ->
-                    MinecraftClient.getInstance().setScreen(new CraftsiScreen())
+                    MinecraftClient.getInstance().setScreen(
+                        new net.craftsi.mod.gui.CraftsiScreen())
                 );
             }
-            // Авто-крафт только на клиенте
-            if (client.player != null && client.world != null && client.world.isClient()) {
+            if (client.player != null
+                && client.world != null
+                && client.world.isClient()) {
                 CraftExecutor.tick(NodeGraph.getInstance(), client.player);
             }
         });
