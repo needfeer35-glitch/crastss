@@ -13,14 +13,9 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class CraftsiMod implements ClientModInitializer {
 
     public static KeyBinding openGuiKey;
-    public static CraftsiScreen currentScreen = null;
-    public static final Set<String> autoCraftEnabled = new HashSet<>();
 
     @Override
     public void onInitializeClient() {
@@ -37,19 +32,13 @@ public class CraftsiMod implements ClientModInitializer {
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (openGuiKey.wasPressed()) {
-                MinecraftClient.getInstance().send(() -> {
-                    currentScreen = new CraftsiScreen();
-                    MinecraftClient.getInstance().setScreen(currentScreen);
-                });
+                MinecraftClient.getInstance().send(() ->
+                    MinecraftClient.getInstance().setScreen(new CraftsiScreen())
+                );
             }
-
-            if (client.player != null) {
-                // Синхронизируем autoCraftEnabled с текущим экраном
-                if (client.currentScreen instanceof CraftsiScreen screen) {
-                    autoCraftEnabled.clear();
-                    autoCraftEnabled.addAll(screen.getAutoCraftEnabled());
-                }
-                CraftExecutor.tick(NodeGraph.getInstance(), client.player, autoCraftEnabled);
+            // Авто-крафт только на клиенте
+            if (client.player != null && client.world != null && client.world.isClient()) {
+                CraftExecutor.tick(NodeGraph.getInstance(), client.player);
             }
         });
     }
