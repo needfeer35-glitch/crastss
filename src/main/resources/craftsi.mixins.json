@@ -1,12 +1,13 @@
 {
-  "required": true,
+  "required": false,
   "minVersion": "0.8",
   "package": "net.craftsi.mod.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "AutoCraftMixin"
+    "AutoCraftMixin",
+    "NoBlurMixin"
   ],
   "injectors": {
-    "defaultRequire": 1
+    "defaultRequire": 0
   }
 }
