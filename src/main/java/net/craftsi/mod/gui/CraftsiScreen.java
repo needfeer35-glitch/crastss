@@ -59,36 +59,36 @@ public class CraftsiScreen extends Screen {
         RU.put("дубовые доски","oak_planks"); RU.put("дубовое бревно","oak_log");
         RU.put("берёзовые доски","birch_planks"); RU.put("железная кирка","iron_pickaxe");
         RU.put("алмазный меч","diamond_sword"); RU.put("железный меч","iron_sword");
-        RU.put("каменный меч","stone_sword"); RU.put("деревянная палка","stick");
+        RU.put("каменный меч","stone_sword");
     }
 
-    private static final int BG       = 0xFF0D0F1A;
-    private static final int CANVAS   = 0xFF0A0C14;
-    private static final int PANELBG  = 0xFF141620;
-    private static final int PANELDARK= 0xFF0D0F18;
-    private static final int BORDER   = 0xFF2A2D45;
-    private static final int BORDERL  = 0xFF4A4E72;
-    private static final int GREEN    = 0xFF00C853;
-    private static final int GREEND   = 0xFF003820;
-    private static final int BLUE     = 0xFF2979FF;
-    private static final int BLUED    = 0xFF001A50;
-    private static final int YELLOW   = 0xFFFFD600;
-    private static final int RED      = 0xFFE53935;
-    private static final int REDD     = 0xFF3A0808;
-    private static final int NODEBG   = 0xFF141828;
-    private static final int NODEHOV  = 0xFF1A1E32;
-    private static final int HDRON    = 0xFF003820;
-    private static final int HDROFF   = 0xFF380808;
-    private static final int PORT     = 0xFFFFD600;
-    private static final int LINE     = 0xCC00C853;
-    private static final int WHITE    = 0xFFFFFFFF;
-    private static final int GRAY     = 0xFF6B7099;
-    private static final int LGRAY    = 0xFFB0B4CC;
+    private static final int BG        = 0xFF0D0F1A;
+    private static final int CANVAS    = 0xFF0A0C14;
+    private static final int PANELBG   = 0xFF141620;
+    private static final int PANELDARK = 0xFF0D0F18;
+    private static final int BORDER    = 0xFF2A2D45;
+    private static final int BORDERL   = 0xFF4A4E72;
+    private static final int GREEN     = 0xFF00C853;
+    private static final int GREEND    = 0xFF003820;
+    private static final int BLUE      = 0xFF2979FF;
+    private static final int BLUED     = 0xFF001A50;
+    private static final int YELLOW    = 0xFFFFD600;
+    private static final int RED       = 0xFFE53935;
+    private static final int REDD      = 0xFF3A0808;
+    private static final int NODEBG    = 0xFF141828;
+    private static final int NODEHOV   = 0xFF1A1E32;
+    private static final int HDRON     = 0xFF003820;
+    private static final int HDROFF    = 0xFF380808;
+    private static final int PORT      = 0xFFFFD600;
+    private static final int LINE      = 0xCC00C853;
+    private static final int WHITE     = 0xFFFFFFFF;
+    private static final int GRAY      = 0xFF6B7099;
+    private static final int LGRAY     = 0xFFB0B4CC;
 
     private static final int LW = 112;
     private static final int TH = 28;
     private static final int BH = 20;
-    private static final String[] TOOLS = {"✦ Выделить","✥ Переместить","⟷ Соединить","✕ Удалить"};
+    private static final String[] TOOLS = {"Выделить","Переместить","Соединить","Удалить"};
     private int tool = 0;
 
     public CraftsiScreen() {
@@ -103,13 +103,10 @@ public class CraftsiScreen extends Screen {
         rebuildFilter();
     }
 
-    // ══ УБИРАЕМ БЛЮР ПОЛНОСТЬЮ ══
     @Override
     public boolean blursBackground() {
         return false;
     }
-
-    // В 1.21.5 этот метод принимает именно такие параметры
 
     @Override
     public void render(DrawContext ctx, int mx, int my, float delta) {
@@ -126,11 +123,11 @@ public class CraftsiScreen extends Screen {
     private void renderTopBar(DrawContext ctx, int mx, int my) {
         ctx.fill(0, 0, width, TH, PANELDARK);
         ctx.fill(0, TH-1, width, TH, BORDER);
-        ctx.drawCenteredTextWithShadow(textRenderer, Text.literal("✦ CRAFTSI ✦"), LW/2, 10, YELLOW);
+        ctx.drawCenteredTextWithShadow(textRenderer, Text.literal("CRAFTSI"), LW/2, 10, YELLOW);
         int x = LW + 8;
         x = tBtn(ctx, "+ Нода", x, mx, my, GREEND, GREEN) + 6;
-        tBtn(ctx, "⚙ Настройки", x, mx, my, PANELDARK, BORDERL);
-        ctx.drawTextWithShadow(textRenderer, Text.literal("⊕ "+(int)(zoom*100)+"%"), width-55, 10, GRAY);
+        tBtn(ctx, "Настройки", x, mx, my, PANELDARK, BORDERL);
+        ctx.drawTextWithShadow(textRenderer, Text.literal((int)(zoom*100)+"%"), width-40, 10, GRAY);
     }
 
     private int tBtn(DrawContext ctx, String lbl, int x, int mx, int my, int col, int bcol) {
@@ -167,10 +164,10 @@ public class CraftsiScreen extends Screen {
         ctx.fill(0,y,width,y+1,BORDER);
         long total=NodeGraph.getInstance().getNodes().stream().mapToLong(n->n.craftCount).sum();
         ctx.drawTextWithShadow(textRenderer,
-            Text.literal("  Нод: "+NodeGraph.getInstance().getNodes().size()
-                +"   Связей: "+NodeGraph.getInstance().getConnections().size()
-                +"   Создано: "+total
-                +"   Масштаб: "+(int)(zoom*100)+"%"),
+            Text.literal("Нод: "+NodeGraph.getInstance().getNodes().size()
+                +"  Связей: "+NodeGraph.getInstance().getConnections().size()
+                +"  Создано: "+total
+                +"  Масштаб: "+(int)(zoom*100)+"%"),
             LW+5, y+6, GRAY);
     }
 
@@ -205,18 +202,17 @@ public class CraftsiScreen extends Screen {
         ctx.fill(x,y+HH,x+w,y+HH+1,BORDER);
         String title=fit(n.id,w-60);
         ctx.drawTextWithShadow(textRenderer,Text.literal(title),x+5,y+5,WHITE);
-        String badge=n.autoCraftOn?(n.isActive?"●ВКЛ":"●СТОП"):"○ВЫКЛ";
+        String badge=n.autoCraftOn?(n.isActive?"VКЛ":"СТОП"):"ВЫКЛ";
         int bc=n.autoCraftOn?(n.isActive?GREEN:RED):GRAY;
         ctx.drawTextWithShadow(textRenderer,Text.literal(badge),x+w-textRenderer.getWidth(badge)-4,y+5,bc);
         if (zoom>=0.55f) {
-            int iy=y+HH+3;
             if (!n.result.isEmpty()) {
-                ctx.drawItem(n.result,x+4,iy);
+                ctx.drawItem(n.result,x+4,y+HH+3);
                 ctx.drawTextWithShadow(textRenderer,
-                    Text.literal("→ "+fit(n.result.getItem().toString().replace("minecraft:",""),w-30)),
-                    x+22,iy+5,LGRAY);
+                    Text.literal("-> "+fit(n.result.getItem().toString().replace("minecraft:",""),w-30)),
+                    x+22,y+HH+8,LGRAY);
             } else {
-                ctx.drawTextWithShadow(textRenderer,Text.literal("→ нет рецепта"),x+4,iy+5,GRAY);
+                ctx.drawTextWithShadow(textRenderer,Text.literal("-> нет рецепта"),x+4,y+HH+8,GRAY);
             }
             int shown=0;
             for (int i=0;i<9&&shown<6;i++) {
@@ -224,13 +220,13 @@ public class CraftsiScreen extends Screen {
                 if (s!=null&&!s.isEmpty()) { ctx.drawItem(s,x+4+shown*18,y+HH+22); shown++; }
             }
             if (n.craftCount>0)
-                ctx.drawTextWithShadow(textRenderer,Text.literal("✔ "+n.craftCount),x+4,y+h-24,GREEN);
+                ctx.drawTextWithShadow(textRenderer,Text.literal("OK "+n.craftCount),x+4,y+h-24,GREEN);
             if (n.autoCraftOn&&!n.isActive) {
                 MinecraftClient mc=MinecraftClient.getInstance();
                 if (mc.player!=null) {
                     String miss=CraftExecutor.getMissingInfo(n,mc.player);
                     if (!miss.isEmpty())
-                        ctx.drawTextWithShadow(textRenderer,Text.literal("✘ "+fit(miss,w-8)),x+4,y+h-14,RED);
+                        ctx.drawTextWithShadow(textRenderer,Text.literal("X "+fit(miss,w-8)),x+4,y+h-14,RED);
                 }
             }
             int by=y+h-12,bx=x+4,bw=w-8;
@@ -238,7 +234,7 @@ public class CraftsiScreen extends Screen {
             ctx.fill(bx,by,bx+bw,by+10, n.autoCraftOn?(bh?0xFF005522:GREEND):(bh?0xFF1A1A33:0xFF101020));
             ctx.drawBorder(bx,by,bw,10, n.autoCraftOn?GREEN:BORDER);
             ctx.drawCenteredTextWithShadow(textRenderer,
-                Text.literal(n.autoCraftOn?"⚙ Авто-крафт: ВКЛ":"⚙ Авто-крафт: ВЫКЛ"),
+                Text.literal(n.autoCraftOn?"Авто-крафт: ВКЛ":"Авто-крафт: ВЫКЛ"),
                 bx+bw/2,by+2,WHITE);
         }
         ctx.fill(x-4,y+h/2-4,x+4,y+h/2+4,PORT);
@@ -252,9 +248,9 @@ public class CraftsiScreen extends Screen {
         ctx.drawBorder(px,py,pw,ph,BLUE);
         ctx.fill(px,py,px+pw,py+22,PANELDARK);
         ctx.fill(px,py+22,px+pw,py+23,BORDER);
-        ctx.drawTextWithShadow(textRenderer,Text.literal("✦ Узел: "+editingNode.id),px+8,py+7,WHITE);
-        sBtn(ctx,"✕",px+pw-20,py+4,16,14,mx,my,RED,RED);
-        ctx.drawTextWithShadow(textRenderer,Text.literal("Рецепт крафта:"),px+8,py+26,GRAY);
+        ctx.drawTextWithShadow(textRenderer,Text.literal("Узел: "+editingNode.id),px+8,py+7,WHITE);
+        sBtn(ctx,"X",px+pw-20,py+4,16,14,mx,my,RED,RED);
+        ctx.drawTextWithShadow(textRenderer,Text.literal("Рецепт:"),px+8,py+26,GRAY);
         for (int i=0;i<9;i++) {
             int col=i%3,row=i/3,slx=px+8+col*46,sly=py+38+row*46;
             boolean sel=editingSlot==i;
@@ -263,19 +259,19 @@ public class CraftsiScreen extends Screen {
             ItemStack s=editingNode.inputs[i];
             if (s!=null&&!s.isEmpty()) {
                 ctx.drawItem(s,slx+4,sly+4);
-                ctx.drawTextWithShadow(textRenderer,Text.literal("×"+s.getCount()),slx+28,sly+30,YELLOW);
+                ctx.drawTextWithShadow(textRenderer,Text.literal("x"+s.getCount()),slx+28,sly+30,YELLOW);
             } else {
                 ctx.drawCenteredTextWithShadow(textRenderer,Text.literal(String.valueOf(i+1)),slx+21,sly+17,GRAY);
             }
         }
-        ctx.drawCenteredTextWithShadow(textRenderer,Text.literal("→"),px+152,py+84,YELLOW);
+        ctx.drawCenteredTextWithShadow(textRenderer,Text.literal("->"),px+152,py+84,YELLOW);
         int rx2=px+162,ry2=py+70;
         boolean rSel=editingSlot==9;
         ctx.fill(rx2,ry2,rx2+42,ry2+42, rSel?0xFF0A2010:PANELDARK);
         ctx.drawBorder(rx2,ry2,42,42, rSel?GREEN:BORDER);
         if (!editingNode.result.isEmpty()) {
             ctx.drawItem(editingNode.result,rx2+4,ry2+4);
-            ctx.drawTextWithShadow(textRenderer,Text.literal("×"+editingNode.result.getCount()),rx2+28,ry2+30,YELLOW);
+            ctx.drawTextWithShadow(textRenderer,Text.literal("x"+editingNode.result.getCount()),rx2+28,ry2+30,YELLOW);
         } else {
             ctx.drawCenteredTextWithShadow(textRenderer,Text.literal("?"),rx2+21,ry2+17,GRAY);
         }
@@ -283,7 +279,7 @@ public class CraftsiScreen extends Screen {
         ctx.fill(px+8,py+182,px+202,py+196, aOn?GREEND:REDD);
         ctx.drawBorder(px+8,py+182,194,14, aOn?GREEN:RED);
         ctx.drawCenteredTextWithShadow(textRenderer,
-            Text.literal(aOn?"⚙ Авто-крафт: ВКЛ ✔":"⚙ Авто-крафт: ВЫКЛ ✘"),px+105,py+185,WHITE);
+            Text.literal(aOn?"Авто-крафт: ВКЛ":"Авто-крафт: ВЫКЛ"),px+105,py+185,WHITE);
         ctx.drawTextWithShadow(textRenderer,Text.literal("Создано: "+editingNode.craftCount),px+8,py+202,GRAY);
         ctx.fill(px+215,py+22,px+216,py+ph,BORDER);
         int rx=px+222;
@@ -295,16 +291,16 @@ public class CraftsiScreen extends Screen {
         ctx.drawTextWithShadow(textRenderer,
             Text.literal(inputBuffer.isEmpty()?"Введи (рус/англ)...":inputBuffer+"|"),
             rx+4,py+43, inputBuffer.isEmpty()?GRAY:WHITE);
-        ctx.drawTextWithShadow(textRenderer,Text.literal("напр: палка / stick / oak_log"),rx,py+58,GRAY);
+        ctx.drawTextWithShadow(textRenderer,Text.literal("напр: палка / stick"),rx,py+58,GRAY);
         ctx.drawTextWithShadow(textRenderer,Text.literal("Кол-во:"),rx,py+74,LGRAY);
         ctx.fill(rx,py+84,rx+40,py+98,PANELDARK);
         ctx.drawBorder(rx,py+84,40,14,BORDER);
         ctx.drawCenteredTextWithShadow(textRenderer,Text.literal(String.valueOf(editingCount)),rx+20,py+87,WHITE);
-        sBtn(ctx,"▲",rx+44,py+84,16,14,mx,my,PANELDARK,BORDERL);
-        sBtn(ctx,"▼",rx+64,py+84,16,14,mx,my,PANELDARK,BORDERL);
-        sBtn(ctx,"✔ Применить",rx,py+106,166,16,mx,my,GREEND,GREEN);
-        sBtn(ctx,"✕ Очистить слот",rx,py+126,166,16,mx,my,REDD,RED);
-        sBtn(ctx,"🔍 Выбрать из списка",rx,py+146,166,16,mx,my,BLUED,BLUE);
+        sBtn(ctx,"+",rx+44,py+84,16,14,mx,my,PANELDARK,BORDERL);
+        sBtn(ctx,"-",rx+64,py+84,16,14,mx,my,PANELDARK,BORDERL);
+        sBtn(ctx,"Применить",rx,py+106,166,16,mx,my,GREEND,GREEN);
+        sBtn(ctx,"Очистить слот",rx,py+126,166,16,mx,my,REDD,RED);
+        sBtn(ctx,"Выбрать из списка",rx,py+146,166,16,mx,my,BLUED,BLUE);
         ctx.fill(rx,py+168,rx+166,py+169,BORDER);
         ctx.drawTextWithShadow(textRenderer,Text.literal("Инвентарь:"),rx,py+174,GRAY);
         MinecraftClient mc=MinecraftClient.getInstance();
@@ -332,15 +328,15 @@ public class CraftsiScreen extends Screen {
         ctx.drawBorder(px,py,pw,ph,BLUE);
         ctx.fill(px,py,px+pw,py+22,PANELDARK);
         ctx.fill(px,py+22,px+pw,py+23,BORDER);
-        ctx.drawTextWithShadow(textRenderer,Text.literal("🔍 Выбор предмета"),px+8,py+7,WHITE);
-        sBtn(ctx,"✕",px+pw-20,py+4,16,14,mx,my,RED,RED);
+        ctx.drawTextWithShadow(textRenderer,Text.literal("Выбор предмета"),px+8,py+7,WHITE);
+        sBtn(ctx,"X",px+pw-20,py+4,16,14,mx,my,RED,RED);
         ctx.fill(px+4,py+26,px+pw-4,py+40,PANELDARK);
         ctx.drawBorder(px+4,py+26,pw-8,14,BLUE);
         ctx.drawTextWithShadow(textRenderer,
-            Text.literal("🔍 "+(searchQuery.isEmpty()?"Поиск рус/англ...":searchQuery+"|")),
+            Text.literal(searchQuery.isEmpty()?"Поиск...":searchQuery+"|"),
             px+8,py+29, searchQuery.isEmpty()?GRAY:WHITE);
         ctx.drawTextWithShadow(textRenderer,
-            Text.literal("Найдено: "+filteredItems.size()),px+pw-70,py+29,GRAY);
+            Text.literal("Найдено: "+filteredItems.size()),px+pw-80,py+29,GRAY);
         int rows=(ph-80)/PSLOT;
         int startIdx=pickerScroll*PCOLS;
         ctx.enableScissor(px+4,py+44,px+pw-4,py+44+rows*PSLOT);
@@ -624,8 +620,8 @@ public class CraftsiScreen extends Screen {
 
     private String fit(String s,int px2) {
         if (textRenderer.getWidth(s)<=px2) return s;
-        while (s.length()>1&&textRenderer.getWidth(s+"…")>px2) s=s.substring(0,s.length()-1);
-        return s+"…";
+        while (s.length()>1&&textRenderer.getWidth(s+".")<px2) s=s.substring(0,s.length()-1);
+        return s+".";
     }
 
     private int lighter(int c,int a) {
