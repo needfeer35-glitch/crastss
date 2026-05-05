@@ -110,10 +110,6 @@ public class CraftsiScreen extends Screen {
     }
 
     // В 1.21.5 этот метод принимает именно такие параметры
-    @Override
-    public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
-        // Не вызываем super — рисуем свой фон в render()
-    }
 
     @Override
     public void render(DrawContext ctx, int mx, int my, float delta) {
