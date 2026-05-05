@@ -1,5 +1,5 @@
 {
-  "required": false,
+  "required": true,
   "minVersion": "0.8",
   "package": "net.craftsi.mod.mixin",
   "compatibilityLevel": "JAVA_21",
@@ -7,6 +7,6 @@
     "AutoCraftMixin"
   ],
   "injectors": {
-    "defaultRequire": 0
+    "defaultRequire": 1
   }
 }
