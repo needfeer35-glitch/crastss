@@ -5,4 +5,5 @@ import net.minecraft.client.gui.screen.ingame.CraftingScreen;
 
 @Mixin(CraftingScreen.class)
 public class AutoCraftMixin {
+    // Пустой — крафт работает через tick в CraftExecutor
 }
